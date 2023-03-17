@@ -9,11 +9,24 @@
     <title>Etch a sketch</title>
 </head>
 <body>
-    <div class="canvas" id="canvas"></div>
-    <button class="btn" id="generate-canvas">Generate a canvas</button>
-    <input  class="btn" id="color-picker" type="color">
-    <div class="colors-used-panel" id="colors-used-panel"></div>
-    
+
+    <main>
+        <div class="canvas" id="canvas"></div>
+        <div class="controls">
+            <div class="colors-used-panel" id="colors-used-panel"></div>
+            <input  class="btn" id="color-picker" type="color">
+            <fieldset>
+                <legend>modes</legend>
+                <label for="pencil">Pencil</label>
+                <input type="radio" class="pencil" id="pencil" name="modes" checked>
+                <label for="eraser">Eraser</label>
+                <input type="radio" class="eraser" id="eraser" name="modes">
+            </fieldset>
+            <button class="btn" id="generate-canvas">Generate a canvas</button>
+            <input type="checkbox"class="btn" id="grid-btn" checked>
+        </div>
+    </main>
+
 </body>
 </html>
 

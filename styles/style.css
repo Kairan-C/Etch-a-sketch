@@ -1,3 +1,10 @@
+main{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
 .canvas{
     width: 600px;
     height: 600px;
@@ -6,6 +13,15 @@
     grid-template-rows: repeat(16, 1fr);
     background-color: rgb(97, 95, 92);
     user-select: none;
+}
+
+.cell-grid{
+    border: 1px solid black;
+}
+
+.controls{
+    display: flex;
+    flex-direction: column;
 }
 
 .colors-used-panel {

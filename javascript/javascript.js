@@ -1,14 +1,11 @@
-document.addEventListener("readystatechange", (e) => {
-  if (e.target.readyState === "complete") {
-    init();
-  }
-});
-
 const init = () => {
   const canvas = document.getElementById("canvas");
   const createCanvasButton = document.getElementById("generate-canvas");
   const colorPicker = document.getElementById("color-picker");
   const colorsUsedPanel = document.getElementById("colors-used-panel");
+  const pencilButton = document.getElementById("pencil");
+  const eraserButton = document.getElementById("eraser");
+  const gridButton = document.getElementById("grid-btn");
   let userAgentString = navigator.userAgent;
   let chromeAgent = userAgentString.indexOf("Chrome") > -1;
   let firefoxAgent = userAgentString.indexOf("Firefox") > -1;
@@ -17,6 +14,7 @@ const init = () => {
   let canvasColor = "#fefefe";
   let colorUsedCounter = [];
   let size = 16;
+  let mode = "pencil";
 
   let drawing = false;
   const nowDrawing = () => {
@@ -28,7 +26,7 @@ const init = () => {
   };
 
   const getSize = () => {
-    const reg = new RegExp(/^[1-9][0-9]?$|^100$|/);
+    const reg = new RegExp(/^[1-9][0-9]?$|^100$/);
     do {
       size = window.prompt(
         `Please, enter a number between 1 and 100, it will be your canvas size `
@@ -38,7 +36,7 @@ const init = () => {
           `That is an invalid input, please select a number between 1 and 100`
         );
       }
-    } while (reg.test(size) === false || size === null);
+    } while (reg.test(size) === false);
     return size;
   };
 
@@ -53,7 +51,7 @@ const init = () => {
     for (i = 0; i < size * size; i++) {
       let cell = document.createElement("div");
       cell.style.backgroundColor = `${canvasColor}`;
-      cell.style.border = "1px solid black";
+      cell.classList.add("cell-grid");
       cell.addEventListener("mousedown", draw);
       cell.addEventListener("mouseover", draw);
       canvas.append(cell);
@@ -62,8 +60,10 @@ const init = () => {
 
   const draw = (e) => {
     if (e.type === "mouseover" && drawing === false) return;
-    else {
+    else if (mode === "pencil") {
       e.target.style.backgroundColor = color;
+    } else if (mode === "eraser") {
+      e.target.style.backgroundColor = canvasColor;
     }
   };
 
@@ -103,14 +103,50 @@ const init = () => {
     } else return;
   };
 
+  const selectMode = () => {
+    if (pencilButton.checked) {
+      mode = "pencil";
+    } else if (eraserButton.checked) {
+      mode = "eraser";
+    }
+  };
+
+  const gridControl = () => {
+    if (gridButton.checked === false) {
+      removeGrid();
+    } else addGrid();
+  };
+
+  const removeGrid = () => {
+    canvas.childNodes.forEach((cell) => {
+      cell.classList.remove("cell-grid");
+    });
+  };
+
+  const addGrid = () => {
+    canvas.childNodes.forEach((cell) => {
+      cell.classList.add("cell-grid");
+    });
+  };
   createCanvasButton.addEventListener("click", createCanvas);
   canvas.addEventListener("mousedown", nowDrawing);
   canvas.addEventListener("mouseup", notDrawing);
   colorPicker.addEventListener("change", addColor);
   colorsUsedPanel.addEventListener("click", pickUsedColor);
+  pencilButton.addEventListener("change", selectMode);
+  eraserButton.addEventListener("change", selectMode);
+  gridButton.addEventListener("change", gridControl);
 };
 
+document.addEventListener("readystatechange", (e) => {
+  if (e.target.readyState === "complete") {
+    init();
+  }
+});
+
 //TODO add function to change the canvas color
+//TODO pick existing colors from the canvas
 //TODO add a function to clear the canvas without having to reload
 //TODO maybe a dark mode
 //TODO maybe custom promps
+//TODO maybe add custom cursor
