@@ -5,13 +5,14 @@ const init = () => {
   const colorsUsedPanel = document.getElementById("colors-used-panel");
   const pencilButton = document.getElementById("pencil");
   const eraserButton = document.getElementById("eraser");
+  const rainbowButton = document.getElementById("rainbow");
   const gridButton = document.getElementById("grid-btn");
   let userAgentString = navigator.userAgent;
   let chromeAgent = userAgentString.indexOf("Chrome") > -1;
   let firefoxAgent = userAgentString.indexOf("Firefox") > -1;
   let browserVariable = 0;
   let color = "#000000";
-  let canvasColor = "#fefefe";
+  let canvasColor = "#FDFFFC";
   let colorUsedCounter = [];
   let size = 16;
   let mode = "pencil";
@@ -40,13 +41,15 @@ const init = () => {
     return size;
   };
 
-  const createCanvas = () => {
+  const removeCanvas = () => {
     while (canvas.firstChild) {
       canvas.removeChild(canvas.firstChild);
     }
-
     getSize();
+    createCanvas(size);
+  };
 
+  const createCanvas = () => {
     canvas.style.cssText = `grid-template-rows: repeat(${size}, 1fr); grid-template-columns: repeat(${size}, 1fr)`;
     for (i = 0; i < size * size; i++) {
       let cell = document.createElement("div");
@@ -59,13 +62,18 @@ const init = () => {
   };
 
   const draw = (e) => {
+    console.log(getComputedStyle(e.target).backgroundColor);
     if (e.type === "mouseover" && drawing === false) return;
     else if (mode === "pencil") {
       e.target.style.backgroundColor = color;
     } else if (mode === "eraser") {
       e.target.style.backgroundColor = canvasColor;
+    } else if (mode === "rainbow") {
+      e.target.style.backgroundColor = getRandomColor();
     }
   };
+
+  createCanvas(size);
 
   const addColor = (e) => {
     let colorUsedCounter = [];
@@ -108,7 +116,18 @@ const init = () => {
       mode = "pencil";
     } else if (eraserButton.checked) {
       mode = "eraser";
+    } else if (rainbowButton.checked) {
+      mode = "rainbow";
     }
+  };
+
+  const getRandomColor = () => {
+    var letters = "0123456789ABCDEF";
+    var randomColor = "#";
+    for (var i = 0; i < 6; i++) {
+      randomColor += letters[Math.floor(Math.random() * 16)];
+    }
+    return randomColor;
   };
 
   const gridControl = () => {
@@ -128,13 +147,15 @@ const init = () => {
       cell.classList.add("cell-grid");
     });
   };
-  createCanvasButton.addEventListener("click", createCanvas);
+
+  createCanvasButton.addEventListener("click", removeCanvas);
   canvas.addEventListener("mousedown", nowDrawing);
   canvas.addEventListener("mouseup", notDrawing);
   colorPicker.addEventListener("change", addColor);
   colorsUsedPanel.addEventListener("click", pickUsedColor);
   pencilButton.addEventListener("change", selectMode);
   eraserButton.addEventListener("change", selectMode);
+  rainbowButton.addEventListener("change", selectMode);
   gridButton.addEventListener("change", gridControl);
 };
 
@@ -144,9 +165,6 @@ document.addEventListener("readystatechange", (e) => {
   }
 });
 
-//TODO add function to change the canvas color
-//TODO pick existing colors from the canvas
 //TODO add a function to clear the canvas without having to reload
-//TODO maybe a dark mode
-//TODO maybe custom promps
+//TODO add a function to ligten and darken the color
 //TODO maybe add custom cursor

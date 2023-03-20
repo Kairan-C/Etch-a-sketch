@@ -1,34 +1,168 @@
-main{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+html,
+body,
+p,
+ol,
+ul,
+li,
+dl,
+dt,
+dd,
+blockquote,
+figure,
+fieldset,
+legend,
+textarea,
+pre,
+iframe,
+hr,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  padding: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: 100%;
+  font-weight: normal;
+}
+
+ul {
+  list-style: none;
+}
+
+button,
+input,
+select {
+  margin: 0;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+img,
+video {
+  height: auto;
+  max-width: 100%;
+}
+
+iframe {
+  border: 0;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+td,
+th {
+  padding: 0;
 }
 
 
-.canvas{
-    width: 600px;
-    height: 600px;
-    display: grid;
-    grid-template-columns: repeat(16, 1fr);
-    grid-template-rows: repeat(16, 1fr);
-    background-color: rgb(97, 95, 92);
-    user-select: none;
+:root{
+    --BG-color:#001021;
+    --Canvas-BG-color:#FDFFFC;
+    --btn-BG-color:#FDFFFC;
+    --accent-color: #D74E09;
 }
 
-.cell-grid{
-    border: 1px solid black;
+body {
+  background-color: var(--BG-color);
+  min-height: 100vh;
 }
 
-.controls{
-    display: flex;
-    flex-direction: column;
+main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.canvas {
+  width: 600px;
+  height: 600px;
+  display: grid;
+  grid-template-columns: repeat(16, 1fr);
+  grid-template-rows: repeat(16, 1fr);
+  background-color: var(--Canvas-BG-color);
+  user-select: none;
+}
+
+.cell-grid {
+  border: 1px solid rgb(121, 118, 118);
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .colors-used-panel {
-    width: 100px;
-    height: 100px;
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(5, 1fr);
-    background-color: rgb(84, 96, 107);
+  width: 200px;
+  height: 200px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  background-color: var(--Canvas-BG-color);
 }
+
+.colors-used-panel > div{
+  cursor: pointer;
+}
+
+.options-wrapper{
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  color: white;
+  border-color: var(--accent-color);
+  text-align: center;
+}
+
+.radio{
+  opacity: 0;
+  position: absolute;
+}
+
+.btn-container{
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.btn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 50px;
+  background-color: var(--btn-BG-color);
+  cursor: pointer;
+  text-align: center;
+  text-transform: uppercase;
+  transition: all 300ms ease;
+}
+
+input:checked + .btn{
+  background-color: var(--accent-color);
+  box-shadow: 0 0 12px var(--accent-color);
+}
+
