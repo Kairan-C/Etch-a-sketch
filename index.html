@@ -16,8 +16,9 @@
         <div class="canvas" id="canvas"></div>
         <div class="controls">
             <div class="colors-used-panel" id="colors-used-panel"></div>
-            <input class="btn" id="color-picker" type="color">
+            <input class="btn" id="color-picker" type="color" autocomplete="off">
             <button class="btn" id="generate-canvas">Generate new canvas</button>
+            <button class="clear-canvas btn" id="clear-canvas">Clear</button>
 
             <legend class="options-wrapper">modes</legend>
             <div class="btn-container">
@@ -31,6 +32,14 @@
             <div class="btn-container">
                 <input type="radio" class="rainbow radio" id="rainbow" name="modes" autocomplete="off">
                 <label for="rainbow" class="btn">Rainbow</label>
+            </div>
+            <div class="btn-container">
+                <input type="radio" class="brighten radio" id="brighten" name="modes" autocomplete="off">
+                <label for="brighten" class="btn">Brighten</label>
+            </div>
+            <div class="btn-container">
+                <input type="radio" class="darken radio" id="darken" name="modes" autocomplete="off">
+                <label for="darken" class="btn">Darken</label>
             </div>
             <div class="btn-container">
             <input type="checkbox" class="grid radio" id="grid-btn" checked>

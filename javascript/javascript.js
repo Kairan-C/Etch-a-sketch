@@ -6,7 +6,10 @@ const init = () => {
   const pencilButton = document.getElementById("pencil");
   const eraserButton = document.getElementById("eraser");
   const rainbowButton = document.getElementById("rainbow");
+  const brightenButton = document.getElementById("brighten");
+  const darkenButton = document.getElementById("darken");
   const gridButton = document.getElementById("grid-btn");
+  const clearButton = document.getElementById("clear-canvas");
   let userAgentString = navigator.userAgent;
   let chromeAgent = userAgentString.indexOf("Chrome") > -1;
   let firefoxAgent = userAgentString.indexOf("Firefox") > -1;
@@ -16,8 +19,8 @@ const init = () => {
   let colorUsedCounter = [];
   let size = 16;
   let mode = "pencil";
-
   let drawing = false;
+
   const nowDrawing = () => {
     drawing = true;
   };
@@ -62,7 +65,6 @@ const init = () => {
   };
 
   const draw = (e) => {
-    console.log(getComputedStyle(e.target).backgroundColor);
     if (e.type === "mouseover" && drawing === false) return;
     else if (mode === "pencil") {
       e.target.style.backgroundColor = color;
@@ -70,12 +72,58 @@ const init = () => {
       e.target.style.backgroundColor = canvasColor;
     } else if (mode === "rainbow") {
       e.target.style.backgroundColor = getRandomColor();
+    } else if (mode === "brighten") {
+      e.target.style.backgroundColor = getShade(
+        getComputedStyle(e.target).backgroundColor,
+        30
+      );
+    } else if (mode === "darken") {
+      e.target.style.backgroundColor = getShade(
+        getComputedStyle(e.target).backgroundColor,
+        -30
+      );
     }
   };
 
+  /*
+this is opacity the challenge states darkness, going to leave it here maybe I will use it for something
+
+  const lighten = (thisColor) => {
+    let values = thisColor.match(/[\d\.]+/g);
+    let r = values[0];
+    let g = values[1];
+    let b = values[2];
+    let a = Number(values[3]);
+    if (a && a !== 0.1) {
+      a = a - 0.1;
+      return `rgba(${r}, ${g}, ${b}, ${a})`;
+    } else if (a === 0.1) {
+      return `rgba(${r}, ${g}, ${b}, ${a})`;
+    } else {
+      a = 0.9;
+      return `rgba(${r}, ${g}, ${b}, ${a})`;
+    }
+  };
+
+  const darken = (thisColor) => {
+    let values = thisColor.match(/[\d\.]+/g);
+    let r = values[0];
+    let g = values[1];
+    let b = values[2];
+    let a = Number(values[3]);
+    if (a && a !== 1) {
+      a = a + 0.1;
+      return `rgba(${r}, ${g}, ${b}, ${a})`;
+    } else if (a === 1) {
+      return `rgba(${r}, ${g}, ${b}, ${a})`;
+    }
+  };
+*/
   createCanvas(size);
 
   const addColor = (e) => {
+    pencilButton.checked = true;
+    mode = "pencil";
     let colorUsedCounter = [];
     color = e.target.value;
     if (colorUsedCounter.length < 25) {
@@ -108,6 +156,8 @@ const init = () => {
     if (e.target.attributes[`${browserVariable}`].nodeValue[0] === "#") {
       color = e.target.attributes[`${browserVariable}`].nodeValue;
       colorPicker.value = color;
+      pencilButton.checked = true;
+      mode = "pencil";
     } else return;
   };
 
@@ -118,6 +168,10 @@ const init = () => {
       mode = "eraser";
     } else if (rainbowButton.checked) {
       mode = "rainbow";
+    } else if (brightenButton.checked) {
+      mode = "brighten";
+    } else if (darkenButton.checked) {
+      mode = "darken";
     }
   };
 
@@ -128,6 +182,17 @@ const init = () => {
       randomColor += letters[Math.floor(Math.random() * 16)];
     }
     return randomColor;
+  };
+
+  const getShade = (thisColor, shadeValue) => {
+    let min = 0;
+    let max = 256;
+    let colorToShade = thisColor.match(/\d+/g);
+    let value = colorToShade.map((individualColor) => {
+      const shade = Number(individualColor) + shadeValue;
+      return Math.min(Math.max(shade, min), max);
+    });
+    return `rgb(${value})`;
   };
 
   const gridControl = () => {
@@ -148,14 +213,23 @@ const init = () => {
     });
   };
 
+  const clearCanvas = (e) => {
+    canvas.childNodes.forEach((cell) => {
+      cell.style.backgroundColor = canvasColor;
+    });
+  };
+
   createCanvasButton.addEventListener("click", removeCanvas);
   canvas.addEventListener("mousedown", nowDrawing);
-  canvas.addEventListener("mouseup", notDrawing);
+  window.addEventListener("mouseup", notDrawing);
+  clearButton.addEventListener("click", clearCanvas);
   colorPicker.addEventListener("change", addColor);
   colorsUsedPanel.addEventListener("click", pickUsedColor);
   pencilButton.addEventListener("change", selectMode);
   eraserButton.addEventListener("change", selectMode);
   rainbowButton.addEventListener("change", selectMode);
+  brightenButton.addEventListener("change", selectMode);
+  darkenButton.addEventListener("change", selectMode);
   gridButton.addEventListener("change", gridControl);
 };
 
@@ -165,6 +239,5 @@ document.addEventListener("readystatechange", (e) => {
   }
 });
 
-//TODO add a function to clear the canvas without having to reload
-//TODO add a function to ligten and darken the color
+//TODO color picker
 //TODO maybe add custom cursor

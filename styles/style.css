@@ -159,6 +159,7 @@ main {
   text-align: center;
   text-transform: uppercase;
   transition: all 300ms ease;
+  user-select: none;
 }
 
 input:checked + .btn{
