@@ -35,21 +35,28 @@ const init = () => {
       size = window.prompt(
         `Please, enter a number between 1 and 100, it will be your canvas size `
       );
-      if (reg.test(size) === false) {
+      if (size == null){
+        break;
+      }
+      else if (reg.test(size) === false) {
         window.alert(
           `That is an invalid input, please select a number between 1 and 100`
         );
       }
     } while (reg.test(size) === false);
-    return size;
+
+    if(size === null){
+    return;
+    } else {
+    removeCanvas()
+    createCanvas(size)
+    }
   };
 
   const removeCanvas = () => {
     while (canvas.firstChild) {
       canvas.removeChild(canvas.firstChild);
     }
-    getSize();
-    createCanvas(size);
   };
 
   const createCanvas = () => {
@@ -85,40 +92,6 @@ const init = () => {
     }
   };
 
-  /*
-this is opacity the challenge states darkness, going to leave it here maybe I will use it for something
-
-  const lighten = (thisColor) => {
-    let values = thisColor.match(/[\d\.]+/g);
-    let r = values[0];
-    let g = values[1];
-    let b = values[2];
-    let a = Number(values[3]);
-    if (a && a !== 0.1) {
-      a = a - 0.1;
-      return `rgba(${r}, ${g}, ${b}, ${a})`;
-    } else if (a === 0.1) {
-      return `rgba(${r}, ${g}, ${b}, ${a})`;
-    } else {
-      a = 0.9;
-      return `rgba(${r}, ${g}, ${b}, ${a})`;
-    }
-  };
-
-  const darken = (thisColor) => {
-    let values = thisColor.match(/[\d\.]+/g);
-    let r = values[0];
-    let g = values[1];
-    let b = values[2];
-    let a = Number(values[3]);
-    if (a && a !== 1) {
-      a = a + 0.1;
-      return `rgba(${r}, ${g}, ${b}, ${a})`;
-    } else if (a === 1) {
-      return `rgba(${r}, ${g}, ${b}, ${a})`;
-    }
-  };
-*/
   createCanvas(size);
 
   const addColor = (e) => {
@@ -176,8 +149,8 @@ this is opacity the challenge states darkness, going to leave it here maybe I wi
   };
 
   const getRandomColor = () => {
-    var letters = "0123456789ABCDEF";
-    var randomColor = "#";
+    let letters = "0123456789ABCDEF";
+    let randomColor = "#";
     for (var i = 0; i < 6; i++) {
       randomColor += letters[Math.floor(Math.random() * 16)];
     }
@@ -219,7 +192,7 @@ this is opacity the challenge states darkness, going to leave it here maybe I wi
     });
   };
 
-  createCanvasButton.addEventListener("click", removeCanvas);
+  createCanvasButton.addEventListener("click", getSize);
   canvas.addEventListener("mousedown", nowDrawing);
   window.addEventListener("mouseup", notDrawing);
   clearButton.addEventListener("click", clearCanvas);
@@ -238,6 +211,3 @@ document.addEventListener("readystatechange", (e) => {
     init();
   }
 });
-
-//TODO color picker
-//TODO maybe add custom cursor
